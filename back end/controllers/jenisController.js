@@ -11,11 +11,12 @@ const getAllJenis = asyncHandler(async (req, res) => {
 });
 
 const createJenis = asyncHandler(async (req, res) => {
-  const { nama_jenis: namaJenis, harga } = req.body;
+  const namaJenis = req.body.nama || req.body.nama_jenis;
+  const { harga } = req.body;
 
   if (!namaJenis || harga === undefined) {
     return res.status(400).json({
-      success: false,
+      success: false,a
       message: "Nama jenis dan harga wajib diisi.",
     });
   }
@@ -41,10 +42,12 @@ const updateJenis = asyncHandler(async (req, res) => {
     });
   }
 
-  const { nama_jenis: namaJenis, harga } = req.body;
+  const { harga } = req.body;
+  const namaJenis = req.body.nama || req.body.nama_jenis || existing.nama;
+  const hargaValue = harga === undefined ? existing.harga : Number(harga);
   const item = await jenisModel.updateJenis(req.params.id, {
     namaJenis,
-    harga: Number(harga),
+    harga: hargaValue,
   });
 
   res.status(200).json({

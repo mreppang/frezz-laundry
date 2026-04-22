@@ -9,10 +9,11 @@ const HARGA_KILOAN = 10000;
 const TAMBAHAN_EXPRESS = 10000;
 
 function validateTransaksi(body) {
-  const { nama, no_hp: noHp, layanan, paket, berat_kg: beratKg, items } = body;
+  const noHp = body.nomor_hp || body.no_hp;
+  const { nama, layanan, paket, berat_kg: beratKg, items } = body;
 
   if (!nama || !noHp || !layanan || !paket) {
-    return "Nama, no_hp, layanan, dan paket wajib diisi.";
+    return "Nama, nomor HP, layanan, dan paket wajib diisi.";
   }
 
   if (!["kiloan", "satuan"].includes(layanan)) {
@@ -89,12 +90,15 @@ const createTransaksi = asyncHandler(async (req, res) => {
 
   const {
     nama,
-    no_hp: noHp,
+    nomor_hp,
+    no_hp,
+    alamat,
     layanan,
     paket,
     berat_kg: beratKg,
     items = [],
   } = req.body;
+  const noHp = nomor_hp || no_hp;
 
   const connection = await pool.getConnection();
 
@@ -103,7 +107,7 @@ const createTransaksi = asyncHandler(async (req, res) => {
 
     let pelanggan = await pelangganModel.findByPhone(noHp, connection);
     if (!pelanggan) {
-      pelanggan = await pelangganModel.createPelanggan({ nama, noHp }, connection);
+      pelanggan = await pelangganModel.createPelanggan({ nama, noHp, alamat }, connection);
     }
 
     const transaksiId = await transaksiModel.createTransaksi(
@@ -117,7 +121,6 @@ const createTransaksi = asyncHandler(async (req, res) => {
         status: "belum_selesai",
         tanggalMasuk: new Date(),
         tanggalSelesai: null,
-        createdBy: req.user.id,
       },
       connection,
     );
@@ -131,30 +134,30 @@ const createTransaksi = asyncHandler(async (req, res) => {
       totalHarga = Number(beratKg) * HARGA_KILOAN;
     } else {
       for (const item of items) {
-        const jenis = await jenisModel.findJenisById(item.jenis_id, connection);
+        const jenisId = item.jenis_pakaian_id || item.jenis_id;
+        const jumlah = Number(item.jumlah || item.qty || 0);
+        const jenis = await jenisModel.findJenisById(jenisId, connection);
         if (!jenis) {
-          const error = new Error(`Jenis pakaian ID ${item.jenis_id} tidak ditemukan.`);
+          const error = new Error(`Jenis pakaian ID ${jenisId} tidak ditemukan.`);
           error.statusCode = 404;
           throw error;
         }
 
-        const qty = Number(item.qty || 0);
-        if (qty <= 0) {
-          const error = new Error("Qty item harus lebih dari 0.");
+        if (jumlah <= 0) {
+          const error = new Error("Jumlah item harus lebih dari 0.");
           error.statusCode = 400;
           throw error;
         }
 
         const harga = Number(jenis.harga);
-        const subtotal = qty * harga;
+        const subtotal = jumlah * harga;
         totalHarga += subtotal;
 
         await transaksiModel.insertDetail(
           {
             transaksiId,
             jenisId: jenis.id,
-            qty,
-            harga,
+            jumlah,
             subtotal,
           },
           connection,
@@ -234,7 +237,7 @@ const updateStatus = asyncHandler(async (req, res) => {
 
     if (status === "siap_diambil") {
       responseData.whatsapp_link = createWhatsAppLink(
-        updated.no_hp,
+        updated.nomor_hp || updated.no_hp,
         updated.nama_pelanggan,
         updated.kode_order,
         updated.total_harga,
