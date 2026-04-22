@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREZZ LAUNDRY | Dashboard</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./dashboard.js"></script>
+  </head>
+  <body class="app-body">
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar"></aside>
+      <main class="main-content">
+        <header class="page-header">
+          <div id="pageHeading"></div>
+          <div class="header-card">
+            <span>Session aktif</span>
+            <strong id="headerUsername">-</strong>
+          </div>
+        </header>
+        <section id="messageBox"></section>
+        <section id="statsGrid" class="stats-grid"></section>
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">Transaksi Terbaru</h3>
+              <p class="card-copy">Lima transaksi terakhir yang masuk ke sistem.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Kode</th>
+                  <th>Pelanggan</th>
+                  <th>Layanan</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="latestTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

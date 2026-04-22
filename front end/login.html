@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREZZ LAUNDRY | Login</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./login.js"></script>
+  </head>
+  <body class="auth-body">
+    <main class="auth-shell">
+      <section class="auth-hero">
+        <span class="hero-pill">FREZZ LAUNDRY WEB APP</span>
+        <h1 class="hero-title">Sistem laundry profesional untuk usaha nyata.</h1>
+        <p class="hero-copy">
+          Kelola transaksi kiloan dan satuan, pantau status cucian, kirim pengingat
+          WhatsApp, dan lihat laporan dengan dashboard yang modern dan ringan.
+        </p>
+        <div class="hero-feature-list">
+          <article class="hero-feature">
+            <strong>Owner & Kasir</strong>
+            <span>Hak akses dibedakan dengan JWT dan role system.</span>
+          </article>
+          <article class="hero-feature">
+            <strong>Real business flow</strong>
+            <span>Masuk, transaksi, update status, hingga riwayat selesai.</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="auth-card">
+        <div class="card-heading">
+          <p class="section-kicker">Login</p>
+          <h2 class="section-title">Masuk ke Dashboard</h2>
+          <p class="section-copy">Gunakan akun owner atau kasir yang sudah terdaftar.</p>
+        </div>
+
+        <div id="messageBox"></div>
+
+        <form id="loginForm" class="form-grid">
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" class="input" type="text" placeholder="Masukkan username" required />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" class="input" type="password" placeholder="Masukkan password" required />
+          </div>
+          <button id="loginButton" class="button button-primary" type="submit">Login</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

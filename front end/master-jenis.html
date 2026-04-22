@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREZZ LAUNDRY | Master Jenis</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./master-jenis.js"></script>
+  </head>
+  <body class="app-body">
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar"></aside>
+      <main class="main-content">
+        <header class="page-header">
+          <div id="pageHeading"></div>
+        </header>
+        <section id="messageBox"></section>
+        <section class="content-grid two-cols">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Form Jenis Pakaian</h3>
+                <p class="card-copy">Tambah atau edit master harga pakaian satuan.</p>
+              </div>
+            </div>
+            <form id="jenisForm" class="form-grid">
+              <input id="jenisId" type="hidden" />
+              <div class="field">
+                <label for="namaJenis">Nama Jenis</label>
+                <input id="namaJenis" class="input" type="text" required />
+              </div>
+              <div class="field">
+                <label for="hargaJenis">Harga</label>
+                <input id="hargaJenis" class="input" type="number" min="0" required />
+              </div>
+              <div class="button-row">
+                <button id="saveJenisButton" class="button button-primary" type="submit">Simpan</button>
+                <button id="resetJenisButton" class="button button-ghost" type="button">Reset</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Daftar Jenis</h3>
+                <p class="card-copy">Kelola harga item satuan untuk transaksi laundry.</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nama Jenis</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="jenisTableBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

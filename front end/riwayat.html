@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREZZ LAUNDRY | Riwayat</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./riwayat.js"></script>
+  </head>
+  <body class="app-body">
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar"></aside>
+      <main class="main-content">
+        <header class="page-header">
+          <div id="pageHeading"></div>
+        </header>
+        <section id="messageBox"></section>
+        <section class="card">
+          <form id="searchForm" class="toolbar-form">
+            <input id="searchNama" class="input" type="text" placeholder="Cari nama pelanggan" />
+            <input id="searchKode" class="input" type="text" placeholder="Cari kode order" />
+            <input id="searchTanggal" class="input" type="date" />
+            <button class="button button-primary" type="submit">Cari</button>
+          </form>
+        </section>
+        <section class="card">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Kode</th>
+                  <th>Nama</th>
+                  <th>Tanggal Selesai</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="riwayatTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

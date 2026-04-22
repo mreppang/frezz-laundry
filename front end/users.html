@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREZZ LAUNDRY | Users</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./users.js"></script>
+  </head>
+  <body class="app-body">
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar"></aside>
+      <main class="main-content">
+        <header class="page-header">
+          <div id="pageHeading"></div>
+        </header>
+        <section id="messageBox"></section>
+        <section class="content-grid two-cols">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Form User</h3>
+                <p class="card-copy">Tambah atau edit akun kasir dan owner.</p>
+              </div>
+            </div>
+            <form id="userForm" class="form-grid">
+              <input id="userId" type="hidden" />
+              <div class="field">
+                <label for="userUsername">Username</label>
+                <input id="userUsername" class="input" type="text" required />
+              </div>
+              <div class="field">
+                <label for="userPassword">Password</label>
+                <input id="userPassword" class="input" type="password" placeholder="Kosongkan saat tidak ingin mengubah password" />
+              </div>
+              <div class="field">
+                <label for="userRole">Role</label>
+                <select id="userRole" class="select">
+                  <option value="kasir">Kasir</option>
+                  <option value="owner">Owner</option>
+                </select>
+              </div>
+              <div class="button-row">
+                <button id="saveUserButton" class="button button-primary" type="submit">Simpan</button>
+                <button id="resetUserButton" class="button button-ghost" type="button">Reset</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Daftar User</h3>
+                <p class="card-copy">Owner dapat mengelola akun yang bisa login ke sistem.</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Dibuat</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

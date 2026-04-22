@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FREZZ LAUNDRY | Transaksi Baru</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./transaksi-baru.js"></script>
+  </head>
+  <body class="app-body">
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar"></aside>
+      <main class="main-content">
+        <header class="page-header">
+          <div id="pageHeading"></div>
+        </header>
+        <section id="messageBox"></section>
+        <section class="content-grid two-cols">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Form Transaksi</h3>
+                <p class="card-copy">Input pelanggan, layanan, dan item laundry.</p>
+              </div>
+            </div>
+            <form id="transaksiForm" class="form-grid">
+              <div class="field">
+                <label for="nama">Nama Pelanggan</label>
+                <input id="nama" class="input" type="text" required />
+              </div>
+              <div class="field">
+                <label for="noHp">No HP</label>
+                <input id="noHp" class="input" type="text" required />
+              </div>
+              <div class="field">
+                <label for="layanan">Layanan</label>
+                <select id="layanan" class="select">
+                  <option value="kiloan">Kiloan</option>
+                  <option value="satuan">Satuan</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="paket">Paket</label>
+                <select id="paket" class="select">
+                  <option value="normal">Normal</option>
+                  <option value="express">Express</option>
+                </select>
+              </div>
+              <div id="kiloanFields" class="field">
+                <label for="beratKg">Berat (KG)</label>
+                <input id="beratKg" class="input" type="number" min="0" step="0.1" />
+              </div>
+              <div id="satuanFields" class="form-grid hidden">
+                <div class="field">
+                  <label for="jenisSelect">Jenis Pakaian</label>
+                  <select id="jenisSelect" class="select"></select>
+                </div>
+                <div class="field">
+                  <label for="qtyInput">Qty</label>
+                  <input id="qtyInput" class="input" type="number" min="1" value="1" />
+                </div>
+                <button id="addItemButton" type="button" class="button button-secondary">Tambah Item</button>
+              </div>
+              <button id="saveButton" class="button button-primary" type="submit">Simpan Transaksi</button>
+            </form>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Ringkasan</h3>
+                <p class="card-copy">Total harga dihitung otomatis sesuai layanan dan paket.</p>
+              </div>
+            </div>
+            <div id="itemList" class="list-stack"></div>
+            <div class="summary-card">
+              <span>Total Harga</span>
+              <strong id="totalHarga">Rp 0</strong>
+            </div>
+            <div id="resultBox"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
