@@ -1,16 +1,14 @@
-# Laundry Management API
+# FREZZ LAUNDRY WEB APP - Backend
 
-REST API backend untuk sistem laundry menggunakan Express.js dan MySQL (XAMPP).
+Backend REST API untuk aplikasi laundry berbasis Express.js, MySQL, JWT, dan bcrypt.
 
-## Fitur utama
+## Stack
 
-- Login dengan JWT
-- Middleware autentikasi dan otorisasi role
-- Transaksi laundry kiloan dan satuan
-- Riwayat transaksi selesai
-- Update status dengan link WhatsApp saat siap diambil
-- Master jenis pakaian
-- Pembuatan akun owner/kasir oleh owner
+- Node.js
+- Express.js
+- MySQL (`mysql2/promise`)
+- JWT Authentication
+- bcrypt password hash
 
 ## Struktur
 
@@ -22,52 +20,39 @@ REST API backend untuk sistem laundry menggunakan Express.js dan MySQL (XAMPP).
 - `models/`
 - `routes/`
 - `utils/`
+- `database.sql`
 
-## Cara menjalankan
+## Environment
 
-1. Pastikan MySQL XAMPP aktif dan database `Frezz_laundry` beserta tabel existing sudah tersedia.
-2. Sesuaikan environment variable sesuai `.env` atau `.env.example`.
-3. Jalankan server:
+Gunakan `.env` berikut:
 
-```bash
-npm start
+```env
+PORT=3000
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=Frezz_laundry
+JWT_SECRET=change-this-secret
+JWT_EXPIRES_IN=1d
+CORS_ORIGIN=*
 ```
 
-Server default berjalan di `http://localhost:3000`.
+## API Utama
 
-Konfigurasi bawaan project ini sudah diarahkan ke:
-
-- host `127.0.0.1`
-- port `3306`
-- user `root`
-- database `Frezz_laundry`
-
-## Endpoint utama
-
-### Auth
-
-- `POST /login`
-
-### Users
-
-- `POST /users`
-
-### Transaksi
-
-- `POST /transaksi`
-- `GET /transaksi`
-- `GET /riwayat`
-- `PATCH /transaksi/:id/status`
-- `POST /transaksi/:id/detail`
-
-### Jenis pakaian
-
-- `GET /jenis`
-- `POST /jenis`
-- `PUT /jenis/:id`
-- `DELETE /jenis/:id`
-
-## Catatan password
-
-API login mendukung password plain text maupun password hash `scrypt`.
-User yang dibuat lewat endpoint `POST /users` akan disimpan dengan hash `scrypt`.
+- `POST /api/login`
+- `GET /api/dashboard/stats`
+- `GET /api/jenis`
+- `POST /api/jenis`
+- `PUT /api/jenis/:id`
+- `DELETE /api/jenis/:id`
+- `GET /api/users`
+- `POST /api/users`
+- `PUT /api/users/:id`
+- `DELETE /api/users/:id`
+- `GET /api/transaksi`
+- `GET /api/transaksi/latest`
+- `GET /api/transaksi/:id`
+- `POST /api/transaksi`
+- `PATCH /api/transaksi/:id/status`
+- `GET /api/riwayat`

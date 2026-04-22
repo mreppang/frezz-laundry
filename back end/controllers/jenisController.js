@@ -1,88 +1,74 @@
 const jenisModel = require("../models/jenisPakaianModel");
-const { sendError, sendSuccess } = require("../utils/response");
+const asyncHandler = require("../utils/asyncHandler");
 
-async function getAllJenis(req, res, next) {
-  try {
-    const items = await jenisModel.getAllJenis();
-    return sendSuccess(res, 200, "Daftar jenis pakaian berhasil diambil.", items);
-  } catch (error) {
-    return next(error);
-  }
-}
+const getAllJenis = asyncHandler(async (req, res) => {
+  const items = await jenisModel.getAllJenis();
+  res.status(200).json({
+    success: true,
+    message: "Data jenis pakaian berhasil diambil.",
+    data: items,
+  });
+});
 
-async function createJenis(req, res, next) {
-  try {
-    const { nama, harga } = req.body;
+const createJenis = asyncHandler(async (req, res) => {
+  const { nama_jenis: namaJenis, harga } = req.body;
 
-    if (!nama || harga === undefined) {
-      return sendError(res, 400, "Nama dan harga wajib diisi.");
-    }
-
-    const parsedHarga = Number(harga);
-    if (Number.isNaN(parsedHarga) || parsedHarga < 0) {
-      return sendError(res, 400, "Harga harus berupa angka positif.");
-    }
-
-    const createdItem = await jenisModel.createJenis({
-      nama,
-      harga: parsedHarga,
+  if (!namaJenis || harga === undefined) {
+    return res.status(400).json({
+      success: false,
+      message: "Nama jenis dan harga wajib diisi.",
     });
-
-    return sendSuccess(res, 201, "Jenis pakaian berhasil ditambahkan.", createdItem);
-  } catch (error) {
-    return next(error);
   }
-}
 
-async function updateJenis(req, res, next) {
-  try {
-    const { id } = req.params;
-    const { nama, harga } = req.body;
+  const item = await jenisModel.createJenis({
+    namaJenis,
+    harga: Number(harga),
+  });
 
-    if (!nama || harga === undefined) {
-      return sendError(res, 400, "Nama dan harga wajib diisi.");
-    }
+  res.status(201).json({
+    success: true,
+    message: "Jenis pakaian berhasil ditambahkan.",
+    data: item,
+  });
+});
 
-    const existingItem = await jenisModel.findJenisById(id);
-    if (!existingItem) {
-      return sendError(res, 404, "Jenis pakaian tidak ditemukan.");
-    }
-
-    const parsedHarga = Number(harga);
-    if (Number.isNaN(parsedHarga) || parsedHarga < 0) {
-      return sendError(res, 400, "Harga harus berupa angka positif.");
-    }
-
-    const updatedItem = await jenisModel.updateJenis(id, {
-      nama,
-      harga: parsedHarga,
+const updateJenis = asyncHandler(async (req, res) => {
+  const existing = await jenisModel.findJenisById(req.params.id);
+  if (!existing) {
+    return res.status(404).json({
+      success: false,
+      message: "Jenis pakaian tidak ditemukan.",
     });
-
-    return sendSuccess(res, 200, "Jenis pakaian berhasil diperbarui.", updatedItem);
-  } catch (error) {
-    return next(error);
   }
-}
 
-async function deleteJenis(req, res, next) {
-  try {
-    const { id } = req.params;
+  const { nama_jenis: namaJenis, harga } = req.body;
+  const item = await jenisModel.updateJenis(req.params.id, {
+    namaJenis,
+    harga: Number(harga),
+  });
 
-    const existingItem = await jenisModel.findJenisById(id);
-    if (!existingItem) {
-      return sendError(res, 404, "Jenis pakaian tidak ditemukan.");
-    }
+  res.status(200).json({
+    success: true,
+    message: "Jenis pakaian berhasil diperbarui.",
+    data: item,
+  });
+});
 
-    await jenisModel.deleteJenis(id);
-    return sendSuccess(res, 200, "Jenis pakaian berhasil dihapus.");
-  } catch (error) {
-    if (error.code === "ER_ROW_IS_REFERENCED_2") {
-      return sendError(res, 409, "Jenis pakaian tidak bisa dihapus karena masih dipakai transaksi.");
-    }
-
-    return next(error);
+const deleteJenis = asyncHandler(async (req, res) => {
+  const existing = await jenisModel.findJenisById(req.params.id);
+  if (!existing) {
+    return res.status(404).json({
+      success: false,
+      message: "Jenis pakaian tidak ditemukan.",
+    });
   }
-}
+
+  await jenisModel.deleteJenis(req.params.id);
+  res.status(200).json({
+    success: true,
+    message: "Jenis pakaian berhasil dihapus.",
+  });
+});
 
 module.exports = {
   getAllJenis,

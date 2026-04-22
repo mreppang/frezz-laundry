@@ -2,9 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const env = require("./config/env");
 const { testConnection } = require("./db");
-const { errorHandler, notFoundHandler } = require("./middleware/errorHandler");
+const { errorHandler, notFound } = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const jenisRoutes = require("./routes/jenisRoutes");
+const riwayatRoutes = require("./routes/riwayatRoutes");
 const transaksiRoutes = require("./routes/transaksiRoutes");
 const userRoutes = require("./routes/userRoutes");
 
@@ -21,16 +23,18 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Laundry Management API is running.",
+    message: "FREZZ LAUNDRY WEB APP API berjalan.",
   });
 });
 
-app.use(authRoutes);
-app.use(userRoutes);
-app.use(jenisRoutes);
-app.use(transaksiRoutes);
+app.use("/api", authRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/jenis", jenisRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/transaksi", transaksiRoutes);
+app.use("/api/riwayat", riwayatRoutes);
 
-app.use(notFoundHandler);
+app.use(notFound);
 app.use(errorHandler);
 
 async function startServer() {

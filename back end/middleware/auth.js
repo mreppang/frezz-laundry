@@ -1,35 +1,40 @@
 const jwt = require("jsonwebtoken");
 const env = require("../config/env");
-const { sendError } = require("../utils/response");
 
-function authenticate(req, res, next) {
+function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization || "";
-  const [type, token] = authHeader.split(" ");
+  const [scheme, token] = authHeader.split(" ");
 
-  if (type !== "Bearer" || !token) {
-    return sendError(res, 401, "Token autentikasi tidak ditemukan.");
+  if (scheme !== "Bearer" || !token) {
+    return res.status(401).json({
+      success: false,
+      message: "Token autentikasi tidak ditemukan.",
+    });
   }
 
   try {
-    const decoded = jwt.verify(token, env.jwtSecret);
-    req.user = decoded;
-    return next();
+    req.user = jwt.verify(token, env.jwtSecret);
+    next();
   } catch (error) {
-    return sendError(res, 401, "Token tidak valid atau sudah kedaluwarsa.");
+    return res.status(401).json({
+      success: false,
+      message: "Token tidak valid atau sudah kedaluwarsa.",
+    });
   }
 }
 
-function authorizeRoles(...roles) {
-  return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
-      return sendError(res, 403, "Anda tidak memiliki akses ke resource ini.");
-    }
+function roleOwner(req, res, next) {
+  if (req.user?.role !== "owner") {
+    return res.status(403).json({
+      success: false,
+      message: "Akses hanya untuk owner.",
+    });
+  }
 
-    return next();
-  };
+  next();
 }
 
 module.exports = {
-  authenticate,
-  authorizeRoles,
+  verifyToken,
+  roleOwner,
 };

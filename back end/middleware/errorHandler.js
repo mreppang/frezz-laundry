@@ -1,7 +1,8 @@
-const { sendError } = require("../utils/response");
-
-function notFoundHandler(req, res) {
-  return sendError(res, 404, `Route ${req.method} ${req.originalUrl} tidak ditemukan.`);
+function notFound(req, res) {
+  return res.status(404).json({
+    success: false,
+    message: `Route ${req.method} ${req.originalUrl} tidak ditemukan.`,
+  });
 }
 
 function errorHandler(error, req, res, next) {
@@ -12,17 +13,28 @@ function errorHandler(error, req, res, next) {
   console.error(error);
 
   if (error.code === "ER_DUP_ENTRY") {
-    return sendError(res, 409, "Data duplikat terdeteksi.", error.sqlMessage);
+    return res.status(409).json({
+      success: false,
+      message: "Data duplikat terdeteksi.",
+      error: error.sqlMessage,
+    });
   }
 
   if (error.code === "ER_NO_REFERENCED_ROW_2") {
-    return sendError(res, 400, "Data relasi tidak valid.", error.sqlMessage);
+    return res.status(400).json({
+      success: false,
+      message: "Relasi data tidak valid.",
+      error: error.sqlMessage,
+    });
   }
 
-  return sendError(res, error.statusCode || 500, error.message || "Terjadi kesalahan pada server.");
+  return res.status(error.statusCode || 500).json({
+    success: false,
+    message: error.message || "Terjadi kesalahan pada server.",
+  });
 }
 
 module.exports = {
-  notFoundHandler,
+  notFound,
   errorHandler,
 };
