@@ -10,74 +10,120 @@
   <body class="app-body">
     <div class="app-shell">
       <aside id="sidebar" class="sidebar"></aside>
+
+      <!-- Main Content -->
       <main class="main-content">
+        <!-- Page Header -->
         <header class="page-header">
           <div id="pageHeading"></div>
         </header>
+
+        <!-- Messages -->
         <section id="messageBox"></section>
+
+        <!-- Transaction Form Grid -->
         <section class="content-grid two-cols">
+          <!-- Customer Information Form -->
           <article class="card">
-            <div class="card-head">
-              <div>
-                <h3 class="card-title">Form Transaksi</h3>
-                <p class="card-copy">Input pelanggan, layanan, dan item laundry.</p>
-              </div>
+            <div class="card-header">
+              <h2 class="card-title">👤 Informasi Pelanggan</h2>
+              <p class="card-subtitle">Masukkan data pelanggan dan layanan</p>
             </div>
-            <form id="transaksiForm" class="form-grid">
-              <div class="field">
-                <label for="nama">Nama Pelanggan</label>
-                <input id="nama" class="input" type="text" required />
+            
+            <form id="transaksiForm" class="auth-form">
+              <div class="form-group">
+                <label for="nama" class="form-label">Nama Pelanggan</label>
+                <input id="nama" class="form-input" type="text" placeholder="Masukkan nama pelanggan" required />
               </div>
-              <div class="field">
-                <label for="noHp">No HP</label>
-                <input id="noHp" class="input" type="text" required />
+              
+              <div class="form-group">
+                <label for="noHp" class="form-label">Nomor HP</label>
+                <input id="noHp" class="form-input" type="text" placeholder="08xxxxxxxxxx" required />
               </div>
-              <div class="field">
-                <label for="layanan">Layanan</label>
-                <select id="layanan" class="select">
-                  <option value="kiloan">Kiloan</option>
-                  <option value="satuan">Satuan</option>
+              
+              <div class="form-group">
+                <label for="alamat" class="form-label">Alamat (Opsional)</label>
+                <input id="alamat" class="form-input" type="text" placeholder="Masukkan alamat pelanggan" />
+              </div>
+              
+              <div class="form-group">
+                <label for="layanan" class="form-label">Jenis Layanan</label>
+                <select id="layanan" class="form-input">
+                  <option value="">Pilih layanan</option>
+                  <option value="kiloan">🧺 Kiloan</option>
+                  <option value="satuan">👕 Satuan</option>
                 </select>
               </div>
-              <div class="field">
-                <label for="paket">Paket</label>
-                <select id="paket" class="select">
-                  <option value="normal">Normal</option>
-                  <option value="express">Express</option>
+              
+              <div class="form-group">
+                <label for="paket" class="form-label">Paket Layanan</label>
+                <select id="paket" class="form-input">
+                  <option value="normal">⏰ Normal (3 hari)</option>
+                  <option value="express">🚀 Express (1 hari)</option>
                 </select>
               </div>
-              <div id="kiloanFields" class="field">
-                <label for="beratKg">Berat (KG)</label>
-                <input id="beratKg" class="input" type="number" min="0" step="0.1" />
+              
+              <!-- Kiloan Fields -->
+              <div id="kiloanFields" class="form-group">
+                <label for="beratKg" class="form-label">Berat (KG)</label>
+                <input id="beratKg" class="form-input" type="number" min="0" step="0.1" placeholder="0.0" />
               </div>
-              <div id="satuanFields" class="form-grid hidden">
-                <div class="field">
-                  <label for="jenisSelect">Jenis Pakaian</label>
-                  <select id="jenisSelect" class="select"></select>
-                </div>
-                <div class="field">
-                  <label for="qtyInput">Qty</label>
-                  <input id="qtyInput" class="input" type="number" min="1" value="1" />
-                </div>
-                <button id="addItemButton" type="button" class="button button-secondary">Tambah Item</button>
+              
+              <!-- Satuan Fields -->
+              <div id="satuanFields" class="form-group" style="display: none;">
+                <label for="jenisSelect" class="form-label">Jenis Pakaian</label>
+                <select id="jenisSelect" class="form-input">
+                  <option value="">Pilih jenis pakaian</option>
+                </select>
+                
+                <label for="qtyInput" class="form-label">Jumlah</label>
+                <input id="qtyInput" class="form-input" type="number" min="1" value="1" />
+                
+                <button type="button" id="addItemButton" class="auth-button" style="background: var(--bg-gradient);">
+                  ➕ Tambah Item
+                </button>
               </div>
-              <button id="saveButton" class="button button-primary" type="submit">Simpan Transaksi</button>
+              
+              <button type="submit" id="saveButton" class="auth-button">
+                💾 Simpan Transaksi
+              </button>
             </form>
           </article>
 
+          <!-- Order Summary -->
           <article class="card">
-            <div class="card-head">
-              <div>
-                <h3 class="card-title">Ringkasan</h3>
-                <p class="card-copy">Total harga dihitung otomatis sesuai layanan dan paket.</p>
+            <div class="card-header">
+              <h2 class="card-title">📋 Ringkasan Pesanan</h2>
+              <p class="card-subtitle">Total harga dihitung otomatis</p>
+            </div>
+            
+            <div id="itemList" class="order-items"></div>
+            
+            <div class="summary-section">
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <strong id="subtotalHarga">Rp 0</strong>
+              </div>
+              <div class="summary-row">
+                <span>Biaya Express:</span>
+                <strong id="expressHarga">Rp 0</strong>
+              </div>
+              <div class="summary-row total">
+                <span>Total Harga:</span>
+                <strong id="totalHarga">Rp 0</strong>
               </div>
             </div>
-            <div id="itemList" class="list-stack"></div>
-            <div class="summary-card">
-              <span>Total Harga</span>
-              <strong id="totalHarga">Rp 0</strong>
-            </div>
+            
             <div id="resultBox"></div>
+            
+            <!-- Estimasi Selesai -->
+            <div class="estimation-card">
+              <div class="estimation-icon">⏰</div>
+              <div>
+                <div class="estimation-title">Estimasi Selesai</div>
+                <div class="estimation-time" id="estimasiSelesai">-</div>
+              </div>
+            </div>
           </article>
         </section>
       </main>

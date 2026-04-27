@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const env = require("../config/env");
+const { isBlacklisted } = require("../utils/tokenBlacklist");
 
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization || "";
@@ -12,8 +13,16 @@ function verifyToken(req, res, next) {
     });
   }
 
+  if (isBlacklisted(token)) {
+    return res.status(401).json({
+      success: false,
+      message: "Token sudah tidak berlaku (logout).",
+    });
+  }
+
   try {
     req.user = jwt.verify(token, env.jwtSecret);
+    req.token = token;
     next();
   } catch (error) {
     return res.status(401).json({
@@ -23,18 +32,21 @@ function verifyToken(req, res, next) {
   }
 }
 
-function roleOwner(req, res, next) {
-  if (req.user?.role !== "owner") {
-    return res.status(403).json({
-      success: false,
-      message: "Akses hanya untuk owner.",
-    });
+function logout(req, res, next) {
+  const token = req.token;
+  
+  if (token) {
+    const { addToBlacklist } = require("../utils/tokenBlacklist");
+    addToBlacklist(token);
   }
 
-  next();
+  res.status(200).json({
+    success: true,
+    message: "Logout berhasil.",
+  });
 }
 
 module.exports = {
   verifyToken,
-  roleOwner,
+  logout,
 };

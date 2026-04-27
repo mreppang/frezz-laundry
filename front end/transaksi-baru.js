@@ -138,12 +138,42 @@ async function submitTransaksi(event) {
     renderJenisOptions();
 
     setMessage(document.getElementById("messageBox"), response.message, "success");
-    document.getElementById("resultBox").innerHTML = `
+    
+    // Show success result with WhatsApp button
+    const resultHTML = `
       <div class="notice notice-success">
-        <strong>Kode Order:</strong> ${response.data.kode_order}<br />
-        <strong>Total:</strong> ${formatCurrency(response.data.total_harga)}
+        <h4 style="margin: 0 0 12px 0;">✅ Transaksi Berhasil Disimpan!</h4>
+        <div style="margin-bottom: 8px;">
+          <strong>Kode Order:</strong> ${response.data.kode_order}
+        </div>
+        <div style="margin-bottom: 8px;">
+          <strong>Pelanggan:</strong> ${response.data.nama_pelanggan}
+        </div>
+        <div style="margin-bottom: 16px;">
+          <strong>Total:</strong> ${formatCurrency(response.data.total_harga)}
+        </div>
+        <div class="button-row" style="gap: 8px;">
+          <a 
+            class="button button-primary" 
+            href="${response.data.whatsapp_link}" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;"
+          >
+            <span style="font-size: 18px;">📱</span> Kirim WhatsApp
+          </a>
+          <button 
+            type="button" 
+            class="button button-ghost" 
+            onclick="document.getElementById('resultBox').innerHTML = ''"
+          >
+            Tutup
+          </button>
+        </div>
       </div>
     `;
+    
+    document.getElementById("resultBox").innerHTML = resultHTML;
   } catch (error) {
     setMessage(document.getElementById("messageBox"), error.message, "error");
   } finally {

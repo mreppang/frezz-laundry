@@ -6,15 +6,79 @@ function setMessage(message, type = "error") {
   if (!message) return;
 
   const div = document.createElement("div");
-  div.className = type === "error" ? "notice notice-error" : "notice notice-success";
+  div.className = `message message-${type === "error" ? "error" : "success"}`;
   div.textContent = message;
   box.appendChild(div);
 }
 
 function setLoading(isLoading) {
   const button = document.getElementById("loginButton");
+  const buttonText = button.querySelector(".button-text");
+  const buttonSpinner = button.querySelector(".button-spinner");
+  
   button.disabled = isLoading;
-  button.textContent = isLoading ? "Memproses..." : "Login";
+  
+  if (isLoading) {
+    buttonText.style.display = "none";
+    buttonSpinner.style.display = "flex";
+  } else {
+    buttonText.style.display = "inline";
+    buttonSpinner.style.display = "none";
+  }
+}
+
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const toggleIcon = document.querySelector(".toggle-icon");
+  
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    toggleIcon.textContent = "🙈";
+  } else {
+    passwordInput.type = "password";
+    toggleIcon.textContent = "👁️";
+  }
+}
+
+function showToast(message, type = "success") {
+  // Remove existing toast if any
+  const existingToast = document.querySelector(".toast");
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  // Create toast container if it doesn't exist
+  let toastContainer = document.querySelector(".toast-container");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.className = "toast-container";
+    document.body.appendChild(toastContainer);
+  }
+
+  // Create toast element
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  
+  const icon = type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️";
+  
+  toast.innerHTML = `
+    <div class="toast-icon">${icon}</div>
+    <div class="toast-content">
+      <div class="toast-title">${type === "success" ? "Berhasil" : "Error"}</div>
+      <div class="toast-message">${message}</div>
+    </div>
+    <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+  `;
+
+  toastContainer.appendChild(toast);
+
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    if (toast.parentElement) {
+      toast.style.animation = "slideOut 0.3s ease forwards";
+      setTimeout(() => toast.remove(), 300);
+    }
+  }, 5000);
 }
 
 async function submitLogin(event) {
@@ -55,7 +119,7 @@ async function submitLogin(event) {
 
     window.location.href = "./dashboard.html";
   } catch (error) {
-    setMessage(error.message || "Terjadi kesalahan saat login.");
+    showToast(error.message || "Terjadi kesalahan saat login.", "error");
   } finally {
     setLoading(false);
   }
@@ -68,4 +132,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("loginForm").addEventListener("submit", submitLogin);
+  document.getElementById("passwordToggle").addEventListener("click", togglePassword);
+  
+  // Add input focus effects
+  const inputs = document.querySelectorAll('.login-input');
+  inputs.forEach(input => {
+    input.addEventListener('focus', () => {
+      const icon = input.parentElement.querySelector('.input-icon');
+      if (icon) icon.style.color = '#27C7F7';
+    });
+    
+    input.addEventListener('blur', () => {
+      const icon = input.parentElement.querySelector('.input-icon');
+      if (icon) icon.style.color = '#7C7C7C';
+    });
+  });
 });

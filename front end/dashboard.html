@@ -10,25 +10,62 @@
   <body class="app-body">
     <div class="app-shell">
       <aside id="sidebar" class="sidebar"></aside>
+
+      <!-- Main Content -->
       <main class="main-content">
+        <!-- Page Header -->
         <header class="page-header">
           <div id="pageHeading"></div>
-          <div class="header-card">
-            <span>Session aktif</span>
-            <strong id="headerUsername">-</strong>
-          </div>
         </header>
+
+        <!-- Messages -->
         <section id="messageBox"></section>
+
+        <!-- Statistics Cards -->
         <section id="statsGrid" class="stats-grid"></section>
-        <section class="card">
-          <div class="card-head">
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+          <a href="./transaksi-baru.html" class="quick-action-card">
+            <div class="quick-action-icon">➕</div>
+            <h3 class="quick-action-title">Tambah Pesanan</h3>
+            <p class="quick-action-description">Buat transaksi baru</p>
+          </a>
+          
+          <a href="./daftar-cucian.html" class="quick-action-card">
+            <div class="quick-action-icon">👕</div>
+            <h3 class="quick-action-title">Daftar Cucian</h3>
+            <p class="quick-action-description">Pantau status cucian</p>
+          </a>
+          
+          <a href="./riwayat.html" class="quick-action-card">
+            <div class="quick-action-icon">📋</div>
+            <h3 class="quick-action-title">Riwayat</h3>
+            <p class="quick-action-description">Lihat transaksi selesai</p>
+          </a>
+          
+          <a href="./master-jenis.html" class="quick-action-card">
+            <div class="quick-action-icon">⚙️</div>
+            <h3 class="quick-action-title">Master Jenis</h3>
+            <p class="quick-action-description">Kelola harga item</p>
+          </a>
+        </section>
+
+        <!-- Latest Transactions -->
+        <section class="table-container">
+          <div class="table-header">
             <div>
-              <h3 class="card-title">Transaksi Terbaru</h3>
-              <p class="card-copy">Lima transaksi terakhir yang masuk ke sistem.</p>
+              <h2 class="table-title">Transaksi Terbaru</h2>
+              <p class="card-subtitle">Lima transaksi terakhir yang masuk ke sistem</p>
+            </div>
+            <div class="table-actions">
+              <input type="text" class="search-input" placeholder="Cari transaksi...">
+              <button class="filter-button">Filter</button>
             </div>
           </div>
-          <div class="table-wrap">
-            <table class="table">
+          
+          <div class="table-wrapper">
+            <table class="premium-table">
               <thead>
                 <tr>
                   <th>Kode</th>
@@ -36,6 +73,7 @@
                   <th>Layanan</th>
                   <th>Total</th>
                   <th>Status</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody id="latestTableBody"></tbody>

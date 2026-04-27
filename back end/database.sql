@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Frezz_laundry;
-USE Frezz_laundry;
+CREATE DATABASE IF NOT EXISTS frezz_laundry;
+USE frezz_laundry;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,

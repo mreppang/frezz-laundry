@@ -7,48 +7,121 @@
     <link rel="stylesheet" href="./style.css" />
     <script type="module" src="./login.js"></script>
   </head>
-  <body class="auth-body">
-    <main class="auth-shell">
-      <section class="auth-hero">
-        <span class="hero-pill">FREZZ LAUNDRY WEB APP</span>
-        <h1 class="hero-title">Sistem laundry profesional untuk usaha nyata.</h1>
-        <p class="hero-copy">
-          Kelola transaksi kiloan dan satuan, pantau status cucian, kirim pengingat
-          WhatsApp, dan lihat laporan dengan dashboard yang modern dan ringan.
-        </p>
-        <div class="hero-feature-list">
-          <article class="hero-feature">
-            <strong>Owner & Kasir</strong>
-            <span>Hak akses dibedakan dengan JWT dan role system.</span>
-          </article>
-          <article class="hero-feature">
-            <strong>Real business flow</strong>
-            <span>Masuk, transaksi, update status, hingga riwayat selesai.</span>
-          </article>
-        </div>
-      </section>
+  <body class="login-body">
+    <!-- Decorative Background Elements -->
+    <div class="bg-decoration">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="wave wave-top"></div>
+      <div class="wave wave-bottom"></div>
+    </div>
 
-      <section class="auth-card">
-        <div class="card-heading">
-          <p class="section-kicker">Login</p>
-          <h2 class="section-title">Masuk ke Dashboard</h2>
-          <p class="section-copy">Gunakan akun owner atau kasir yang sudah terdaftar.</p>
-        </div>
-
-        <div id="messageBox"></div>
-
-        <form id="loginForm" class="form-grid">
-          <div class="field">
-            <label for="username">Username</label>
-            <input id="username" class="input" type="text" placeholder="Masukkan username" required />
+    <!-- Main Container -->
+    <div class="login-container">
+      <!-- Left Side - Branding (45%) -->
+      <div class="login-left">
+        <div class="brand-content">
+          <!-- Logo and Title -->
+          <div class="brand-header">
+            <div class="brand-logo">
+              <div class="logo-icon">🧺</div>
+            </div>
+            <h1 class="brand-title">FREZZ LAUNDRY</h1>
           </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <input id="password" class="input" type="password" placeholder="Masukkan password" required />
+          
+          <!-- Welcome Message -->
+          <div class="welcome-section">
+            <h2 class="welcome-title">Selamat Datang di FREZZ LAUNDRY</h2>
+            <p class="welcome-subtitle">
+              Kelola usaha laundry dengan cepat, mudah, dan modern.
+            </p>
           </div>
-          <button id="loginButton" class="button button-primary" type="submit">Login</button>
-        </form>
-      </section>
-    </main>
+          
+          <!-- Feature List -->
+          <div class="features-list">
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <span class="feature-text">Dashboard Modern</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <span class="feature-text">Kelola Transaksi Cepat</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <span class="feature-text">Riwayat Otomatis</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <span class="feature-text">Sistem Owner & Kasir</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Login Card (55%) -->
+      <div class="login-right">
+        <div class="login-card">
+          <!-- Card Header -->
+          <div class="card-header">
+            <div class="card-logo">
+              <div class="mini-logo">🧺</div>
+            </div>
+            <h3 class="card-title">Masuk ke Akun</h3>
+            <p class="card-subtitle">Silakan login untuk melanjutkan</p>
+          </div>
+
+          <!-- Messages -->
+          <div id="messageBox" class="message-container"></div>
+
+          <!-- Login Form -->
+          <form id="loginForm" class="login-form">
+            <!-- Username Input -->
+            <div class="input-group">
+              <div class="input-wrapper">
+                <div class="input-icon">👤</div>
+                <input 
+                  id="username" 
+                  class="login-input" 
+                  type="text" 
+                  placeholder="Username" 
+                  required 
+                  autocomplete="username"
+                />
+              </div>
+            </div>
+            
+            <!-- Password Input -->
+            <div class="input-group">
+              <div class="input-wrapper">
+                <div class="input-icon">🔒</div>
+                <input 
+                  id="password" 
+                  class="login-input" 
+                  type="password" 
+                  placeholder="Password" 
+                  required 
+                  autocomplete="current-password"
+                />
+                <button type="button" class="password-toggle" id="passwordToggle">
+                  <span class="toggle-icon">👁️</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Login Button -->
+            <button id="loginButton" class="login-button" type="submit">
+              <span class="button-text">Masuk</span>
+              <div class="button-spinner" style="display: none;">
+                <div class="spinner"></div>
+              </div>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

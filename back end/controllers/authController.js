@@ -1,61 +1,47 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const env = require("../config/env");
-const userModel = require("../models/userModel");
+const authService = require("../services/authService");
+const { addToBlacklist } = require("../utils/tokenBlacklist");
 const asyncHandler = require("../utils/asyncHandler");
 
 const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).json({
+  
+  try {
+    const result = await authService.login(username, password);
+    
+    res.status(200).json({
+      success: true,
+      message: "Login berhasil.",
+      data: result,
+    });
+  } catch (error) {
+    res.status(401).json({
       success: false,
-      message: "Username dan password wajib diisi.",
+      message: error.message,
     });
   }
+});
 
-  const user = await userModel.findByUsername(username);
-  if (!user) {
-    return res.status(401).json({
+const logout = asyncHandler(async (req, res) => {
+  try {
+    const token = req.token;
+    
+    if (token) {
+      addToBlacklist(token);
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: "Logout berhasil.",
+    });
+  } catch (error) {
+    res.status(400).json({
       success: false,
-      message: "Username atau password salah.",
+      message: error.message,
     });
   }
-
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) {
-    return res.status(401).json({
-      success: false,
-      message: "Username atau password salah.",
-    });
-  }
-
-  const token = jwt.sign(
-    {
-      id: user.id,
-      username: user.username,
-      role: user.role,
-    },
-    env.jwtSecret,
-    {
-      expiresIn: env.jwtExpiresIn,
-    },
-  );
-
-  return res.status(200).json({
-    success: true,
-    message: "Login berhasil.",
-    data: {
-      token,
-      user: {
-        id: user.id,
-        username: user.username,
-        role: user.role,
-      },
-    },
-  });
 });
 
 module.exports = {
   login,
+  logout,
 };

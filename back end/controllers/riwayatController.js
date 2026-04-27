@@ -3,11 +3,10 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const getRiwayat = asyncHandler(async (req, res) => {
   const rows = await transaksiModel.getRiwayat({
-    nama: req.query.nama || "",
-    kode: req.query.kode || "",
+    nama:    req.query.nama    || "",
+    kode:    req.query.kode    || "",
     tanggal: req.query.tanggal || "",
   });
-
   res.status(200).json({
     success: true,
     message: "Data riwayat berhasil diambil.",
@@ -15,6 +14,4 @@ const getRiwayat = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = {
-  getRiwayat,
-};
+module.exports = { getRiwayat };

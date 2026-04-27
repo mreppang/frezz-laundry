@@ -1,45 +1,50 @@
 const { pool } = require("../db");
 
-async function getAllJenis() {
+const getAll = async () => {
   const [rows] = await pool.execute(
-    "SELECT id, nama, nama AS nama_jenis, harga FROM jenis_pakaian ORDER BY nama ASC",
+    "SELECT id, nama, harga FROM jenis_pakaian ORDER BY id DESC"
   );
   return rows;
-}
+};
 
-async function findJenisById(id, connection = pool) {
+const getById = async (id, connection = pool) => {
   const [rows] = await connection.execute(
-    "SELECT id, nama, nama AS nama_jenis, harga FROM jenis_pakaian WHERE id = ? LIMIT 1",
-    [id],
+    "SELECT id, nama, harga FROM jenis_pakaian WHERE id = ? LIMIT 1",
+    [id]
   );
   return rows[0] || null;
-}
+};
 
-async function createJenis({ namaJenis, harga }) {
+const create = async ({ nama, harga }) => {
   const [result] = await pool.execute(
     "INSERT INTO jenis_pakaian (nama, harga) VALUES (?, ?)",
-    [namaJenis, harga],
+    [nama, Number(harga)]
   );
-  return findJenisById(result.insertId);
-}
+  return getById(result.insertId);
+};
 
-async function updateJenis(id, { namaJenis, harga }) {
+const update = async (id, { nama, harga }) => {
   await pool.execute(
     "UPDATE jenis_pakaian SET nama = ?, harga = ? WHERE id = ?",
-    [namaJenis, harga, id],
+    [nama, Number(harga), id]
   );
-  return findJenisById(id);
-}
+  return getById(id);
+};
 
-async function deleteJenis(id) {
-  const [result] = await pool.execute("DELETE FROM jenis_pakaian WHERE id = ?", [id]);
+const remove = async (id) => {
+  const [result] = await pool.execute(
+    "DELETE FROM jenis_pakaian WHERE id = ?",
+    [id]
+  );
   return result.affectedRows > 0;
-}
+};
 
 module.exports = {
-  getAllJenis,
-  findJenisById,
-  createJenis,
-  updateJenis,
-  deleteJenis,
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+  // aliases used by transaksiService
+  findJenisById: getById,
 };

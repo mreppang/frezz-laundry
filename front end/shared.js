@@ -1,12 +1,12 @@
 export const API_BASE_URL = "http://localhost:3000";
 
 const menuItems = [
-  { key: "dashboard", label: "Dashboard", href: "./dashboard.html", roles: ["owner", "kasir"] },
-  { key: "transaksi-baru", label: "Transaksi Baru", href: "./transaksi-baru.html", roles: ["owner", "kasir"] },
-  { key: "daftar-cucian", label: "Daftar Cucian", href: "./daftar-cucian.html", roles: ["owner", "kasir"] },
-  { key: "riwayat", label: "Riwayat", href: "./riwayat.html", roles: ["owner", "kasir"] },
-  { key: "master-jenis", label: "Master Jenis", href: "./master-jenis.html", roles: ["owner"] },
-  { key: "users", label: "Users", href: "./users.html", roles: ["owner"] },
+  { key: "dashboard", label: "Dashboard", href: "./dashboard.html", roles: ["owner", "kasir"], icon: "📊" },
+  { key: "transaksi-baru", label: "Transaksi Baru", href: "./transaksi-baru.html", roles: ["owner", "kasir"], icon: "➕" },
+  { key: "daftar-cucian", label: "Daftar Cucian", href: "./daftar-cucian.html", roles: ["owner", "kasir"], icon: "👕" },
+  { key: "riwayat", label: "Riwayat", href: "./riwayat.html", roles: ["owner", "kasir"], icon: "📋" },
+  { key: "master-jenis", label: "Master Jenis", href: "./master-jenis.html", roles: ["owner"], icon: "⚙️" },
+  { key: "users", label: "Users", href: "./users.html", roles: ["owner"], icon: "👥" },
 ];
 
 export function getToken() {
@@ -31,6 +31,8 @@ export function logout() {
   clearSession();
   window.location.href = "./login.html";
 }
+
+window.logout = logout;
 
 export function guardPage(options = {}) {
   const token = getToken();
@@ -157,6 +159,7 @@ export function mountSidebar(activeKey, title = "FREZZ LAUNDRY") {
     .map(
       (item) => `
         <a class="nav-link ${item.key === activeKey ? "active" : ""}" href="${item.href}">
+          <span class="nav-icon">${item.icon}</span>
           <span>${item.label}</span>
         </a>
       `,
@@ -164,16 +167,22 @@ export function mountSidebar(activeKey, title = "FREZZ LAUNDRY") {
     .join("");
 
   sidebar.innerHTML = `
-    <div class="brand-card">
-      <p class="brand-overline">Laundry Management</p>
-      <h1 class="brand-title">${title}</h1>
-      <p class="brand-copy">Admin dashboard modern untuk operasional laundry harian.</p>
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">🧺</div>
+      <h1>FREZZ LAUNDRY</h1>
     </div>
-    <nav class="nav-list">${links}</nav>
+    
+    <nav class="sidebar-nav">
+      ${links}
+    </nav>
+    
     <div class="sidebar-footer">
-      <div class="user-box">
-        <strong>${username || "Pengguna"}</strong>
-        <span>${String(role || "guest").toUpperCase()}</span>
+      <div class="user-info">
+        <div class="user-avatar">${username ? username.charAt(0).toUpperCase() : 'U'}</div>
+        <div class="user-details">
+          <h3 id="headerUsername">${username || 'Pengguna'}</h3>
+          <p id="userRole">${role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Guest'}</p>
+        </div>
       </div>
       <button id="logoutSidebarButton" class="button button-ghost" type="button">Logout</button>
     </div>
